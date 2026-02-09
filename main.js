@@ -1,6 +1,10 @@
 const lottoNumbersDiv = document.getElementById("lotto-numbers");
 const generateButton = document.getElementById("generate-button");
-const themeToggleButton = document.getElementById("theme-toggle-button"); // 새로 추가
+const themeToggleButton = document.getElementById("theme-toggle-button");
+
+const commentInput = document.getElementById("comment-input");
+const submitCommentButton = document.getElementById("submit-comment-button");
+const commentsList = document.getElementById("comments-list");
 
 // Function to set the theme
 const setTheme = (isDarkMode) => {
@@ -44,3 +48,45 @@ const generateLottoNumbers = () => {
 generateButton.addEventListener("click", generateLottoNumbers);
 
 generateLottoNumbers();
+
+// Comments functionality
+let comments = JSON.parse(localStorage.getItem("comments")) || [];
+
+const saveComments = () => {
+  localStorage.setItem("comments", JSON.stringify(comments));
+};
+
+const renderComments = () => {
+  commentsList.innerHTML = "";
+  comments.forEach((comment, index) => {
+    const commentItem = document.createElement("div");
+    commentItem.classList.add("comment-item");
+    commentItem.innerHTML = `
+      <span class="comment-text">${comment}</span>
+      <button class="comment-delete-button" data-index="${index}">Delete</button>
+    `;
+    commentsList.appendChild(commentItem);
+  });
+
+  document.querySelectorAll(".comment-delete-button").forEach(button => {
+    button.addEventListener("click", (event) => {
+      const indexToDelete = parseInt(event.target.dataset.index);
+      comments.splice(indexToDelete, 1);
+      saveComments();
+      renderComments();
+    });
+  });
+};
+
+submitCommentButton.addEventListener("click", () => {
+  const newComment = commentInput.value.trim();
+  if (newComment) {
+    comments.push(newComment);
+    commentInput.value = "";
+    saveComments();
+    renderComments();
+  }
+});
+
+// Initial render of comments when the page loads
+renderComments();
