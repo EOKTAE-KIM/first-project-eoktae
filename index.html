@@ -3,12 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lotto Number Generator</title>
+  <title>2026 밀라노 코르티나 동계 올림픽 현황</title>
   <link href='/style.css' rel='stylesheet'>
+  <link href="https://cdn.jsdelivr.net/npm/flag-icons@latest/css/flag-icons.min.css" rel="stylesheet">
 </head>
 <body>
   <div class="container">
+    <h1>2026 밀라노 코르티나 동계 올림픽 현황</h1>
     <button id="theme-toggle-button">Toggle Theme</button>
+
+    <div class="status-section">
+      <h2>메달 현황</h2>
+      <div id="medal-standings">
+        <p>메달 데이터를 불러오는 중...</p>
+      </div>
+    </div>
+
+    <div class="status-section">
+      <h2>주요 경기 일정</h2>
+      <div id="event-schedule">
+        <p>경기 일정을 불러오는 중...</p>
+      </div>
+    </div>
+    
+    <div id="loading-spinner" style="display: none;">로딩 중...</div>
   </div>
 
   <script defer type="text/javascript" src="/main.js"></script>
