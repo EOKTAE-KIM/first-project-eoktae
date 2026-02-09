@@ -6,6 +6,7 @@ body {
   min-height: 100vh;
   background-color: #f0f0f0; /* Light mode background */
   color: #333; /* Light mode text color */
+  margin: 0;
 }
 
 body.dark-mode {
@@ -15,208 +16,41 @@ body.dark-mode {
 
 .container {
   text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 800px; /* Adjust as needed */
+  width: 100%;
 }
 
 body.dark-mode .container {
   background-color: #444; /* Dark mode container background */
-  border-radius: 8px;
-  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.lotto-numbers {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.lotto-number {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #fff; /* Light mode lotto number background */
-  border: 1px solid #ccc; /* Light mode lotto number border */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-}
-
-body.dark-mode .lotto-number {
-  background-color: #555; /* Dark mode lotto number background */
-  border: 1px solid #777; /* Dark mode lotto number border */
-  color: #eee;
-}
-
-#generate-button, #theme-toggle-button {
+#theme-toggle-button {
   padding: 10px 20px;
   font-size: 18px;
   cursor: pointer;
   margin: 5px; /* Add some margin for spacing */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
 }
 
-body.dark-mode #generate-button,
+#theme-toggle-button:hover {
+  background-color: #0056b3;
+}
+
 body.dark-mode #theme-toggle-button {
   background-color: #666;
   color: #eee;
   border: 1px solid #888;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-body.dark-mode #generate-button:hover,
 body.dark-mode #theme-toggle-button:hover {
   background-color: #777;
-}
-
-/* Comments Section Styles */
-.comments-section {
-  background-color: #fefefe;
-  padding: 25px;
-  margin: 30px auto; /* 중앙 정렬 및 상하 마진 */
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 더 부드러운 그림자 */
-  width: 100%;
-  max-width: 600px;
-  display: flex; /* 내부 요소들을 flexbox로 정렬 */
-  flex-direction: column; /* 세로 방향 정렬 */
-  gap: 15px; /* 요소들 사이 간격 */
-}
-
-body.dark-mode .comments-section {
-  background-color: #3a3a3a;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  color: #e0e0e0;
-}
-
-.comments-section h2 {
-  margin-top: 0;
-  margin-bottom: 15px; /* 제목 아래 간격 추가 */
-  color: #2c3e50; /* 어두운 색상으로 강조 */
-  font-size: 1.8em;
-  border-bottom: 2px solid #e0e0e0; /* 제목 아래 구분선 */
-  padding-bottom: 10px;
-}
-
-body.dark-mode .comments-section h2 {
-  color: #f0f0f0;
-  border-bottom: 2px solid #555;
-}
-
-#comment-input {
-  width: calc(100% - 24px); /* Account for padding and border */
-  min-height: 90px; /* 높이 약간 증가 */
-  padding: 12px;
-  border: 1px solid #dcdcdc; /* 얇은 테두리 */
-  border-radius: 6px; /* 둥근 모서리 */
-  font-size: 16px;
-  resize: vertical;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease; /* 전환 효과 */
-}
-
-#comment-input:focus {
-  border-color: #007bff; /* 포커스 시 색상 변경 */
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* 포커스 시 그림자 */
-  outline: none; /* 기본 아웃라인 제거 */
-}
-
-body.dark-mode #comment-input {
-  background-color: #4c4c4c;
-  color: #e0e0e0;
-  border-color: #666;
-}
-
-body.dark-mode #comment-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4);
-}
-
-#submit-comment-button {
-  padding: 12px 25px; /* 패딩 증가 */
-  font-size: 17px; /* 폰트 크기 증가 */
-  background-color: #28a745; /* 초록색 버튼 */
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease; /* 클릭 효과 추가 */
-  align-self: flex-end; /* 오른쪽 정렬 */
-}
-
-#submit-comment-button:hover {
-  background-color: #218838;
-  transform: translateY(-1px); /* 약간 위로 이동 */
-}
-
-#submit-comment-button:active {
-  transform: translateY(0); /* 클릭 시 원위치 */
-}
-
-body.dark-mode #submit-comment-button {
-  background-color: #28a745;
-}
-
-body.dark-mode #submit-comment-button:hover {
-  background-color: #218838;
-}
-
-#comments-list {
-  margin-top: 20px;
-  border-top: 1px solid #e9ecef; /* 더 밝은 구분선 */
-  padding-top: 20px;
-  display: flex; /* 댓글 항목들을 flexbox로 정렬 */
-  flex-direction: column; /* 세로 방향 정렬 */
-  gap: 15px; /* 댓글 항목 간 간격 */
-}
-
-body.dark-mode #comments-list {
-  border-top: 1px solid #555;
-}
-
-.comment-item {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  padding: 15px; /* 패딩 증가 */
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 항목별 그림자 */
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start; /* 텍스트가 길어져도 상단 정렬 */
-  gap: 10px; /* 텍스트와 버튼 간 간격 */
-}
-
-body.dark-mode .comment-item {
-  background-color: #4c4c4c;
-  border-color: #666;
-  color: #e0e0e0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.comment-text {
-  flex-grow: 1;
-  line-height: 1.5; /* 가독성 향상 */
-  color: #34495e; /* 텍스트 색상 */
-}
-
-body.dark-mode .comment-text {
-  color: #e0e0e0;
-}
-
-.comment-delete-button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 8px 15px; /* 패딩 조정 */
-  border-radius: 5px; /* 둥근 모서리 */
-  cursor: pointer;
-  margin-left: 10px;
-  font-size: 0.9em;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  flex-shrink: 0; /* 공간이 부족해도 줄어들지 않도록 */
-}
-
-.comment-delete-button:hover {
-  background-color: #c82333;
-  transform: translateY(-1px);
-}
-
-.comment-delete-button:active {
-  transform: translateY(0);
 }
