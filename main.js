@@ -67,7 +67,7 @@ async function loadOlympicsData() {
 // Render Medal Standings
 function renderMedalStandings(medals) {
   if (!medals || medals.length === 0) {
-    medalStandingsDiv.innerHTML = "<p>메달 현황 정보 없음.</p>";
+    medalStandingsDiv.innerHTML = "<p>대회 시작 전입니다.</p>";
     return;
   }
 
@@ -136,7 +136,7 @@ function renderEventSchedule(schedule) {
     } else if (event.teams && event.teams.length > 0) {
       participantsHtml = event.teams.map(team => {
         return `${getFlagIcon(team.name)} ${team.name}` + (team.score !== null ? ` (스코어${team.score})` : '');
-      }).join('<br>');
+      }).join(' vs ');
     } else {
       participantsHtml = 'N/A';
     }
