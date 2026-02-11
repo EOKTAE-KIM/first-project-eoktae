@@ -1,34 +1,130 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2026 밀라노 코르티나 동계 올림픽 현황</title>
-  <link href='/style.css' rel='stylesheet'>
-  <link href="https://cdn.jsdelivr.net/npm/flag-icons@latest/css/flag-icons.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cosmic Marble Run</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>2026 밀라노 코르티나 동계 올림픽 현황</h1>
-    <button id="theme-toggle-button">Toggle Theme</button>
-
-    <div class="status-section">
-      <h2>메달 현황</h2>
-      <div id="medal-standings">
-        <p>메달 데이터를 불러오는 중...</p>
-      </div>
-    </div>
-
-    <div class="status-section">
-      <h2>주요 경기 일정</h2>
-      <div id="event-schedule">
-        <p>경기 일정을 불러오는 중...</p>
-      </div>
+    <div id="starfield-bg">
+        <div id="stars1"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
     </div>
     
-    <div id="loading-spinner" style="display: none;">로딩 중...</div>
-  </div>
+    <div id="canvas-area"><canvas id="gameCanvas"></canvas></div>
 
-  <script defer type="text/javascript" src="/main.js"></script>
+    <div id="hud-container">
+        <div id="top-hud">
+            <h1 class="game-title">COSMIC MARBLE RUN</h1>
+            <div id="game-status-hud">
+                <span id="game-state-display">SETUP</span>
+                <span id="debug-info" class="hidden">FPS: -- | Marbles: --</span>
+            </div>
+        </div>
+
+        <div id="ranking-panel" class="glass-panel">
+            <h2>RANKING</h2>
+            <ul id="ranking-list"></ul>
+        </div>
+
+        <div id="right-panel" class="glass-panel">
+            <button id="panel-toggle-btn">
+                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4 18h16v-2H4v2zm0-5h16v-2H4v2zm0-7v2h16V6H4z"></path></svg>
+            </button>
+            
+            <div class="panel-content">
+                <div class="panel-section">
+                    <h2>참가자 입력</h2>
+                    <textarea id="participantInput">홍길동*3, 김경태*3</textarea>
+                    <div id="participant-preview">
+                        <p>총 공 개수: <span id="totalMarbleCount">0</span></p>
+                        <ul id="marbleDistribution"></ul>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2>게임 설정</h2>
+                    <div class="setting-group">
+                        <label>당첨 모드</label>
+                        <div class="toggle-switch" id="selectionMode">
+                            <input type="radio" id="modeFirst" name="selectionMode" value="FIRST" checked><label for="modeFirst">FIRST</label>
+                            <input type="radio" id="modeLast" name="selectionMode" value="LAST"><label for="modeLast">LAST</label>
+                            <input type="radio" id="modeScore" name="selectionMode" value="SCORE"><label for="modeScore">SCORE</label>
+                        </div>
+                    </div>
+                     <div class="setting-group">
+                        <label>드롭 방식</label>
+                        <div class="toggle-switch" id="dropMode">
+                            <input type="radio" id="dropAllAtOnce" name="dropMode" value="ALL_AT_ONCE" checked><label for="dropAllAtOnce">ALL</label>
+                            <input type="radio" id="dropStaggered" name="dropMode" value="STAGGERED"><label for="dropStaggered">STAGGERED</label>
+                        </div>
+                    </div>
+                    <div class="setting-group" id="staggeredIntervalControl">
+                        <label>간격: <span id="intervalValue">100</span> ms</label>
+                        <input type="range" id="staggeredInterval" min="50" max="200" value="100">
+                    </div>
+                     <div class="setting-group">
+                        <label>난이도</label>
+                        <div class="toggle-switch" id="difficulty">
+                            <input type="radio" id="diffEasy" name="difficulty" value="EASY" checked><label for="diffEasy">EASY</label>
+                            <input type="radio" id="diffMid" name="difficulty" value="MID"><label for="diffMid">MID</label>
+                            <input type="radio" id="diffHard" name="difficulty" value="HARD"><label for="diffHard">HARD</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section actions">
+                    <button id="startButton" class="action-button primary" disabled>START</button>
+                    <button id="resetButton" class="action-button secondary" disabled>RESET</button>
+                    <p id="gameStatus" class="status-message">참가자를 입력해주세요.</p>
+                </div>
+
+                 <div class="panel-section">
+                    <div class="setting-group bottom-controls">
+                        <div class="sound-toggle">
+                            <label for="soundToggleCheckbox">SOUND</label>
+                            <input type="checkbox" id="soundToggleCheckbox" checked>
+                        </div>
+                        <div class="motion-toggle">
+                            <label for="reduceMotionCheckbox">REDUCE MOTION</label>
+                            <input type="checkbox" id="reduceMotionCheckbox">
+                        </div>
+                        <div class="record-toggle">
+                            <label for="recordCheckbox">RECORD</label>
+                            <input type="checkbox" id="recordCheckbox">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bottom-hud">
+            <div id="arrival-log-container" class="glass-panel">
+                <h2>LOG</h2>
+                <ul id="arrivalLog"></ul>
+            </div>
+            <div id="winner-display-container" class="hidden">
+                 <div id="winnerCard" class="glass-panel winner-card">
+                    <div class="winner-title">WINNER</div>
+                    <div id="winnerName" class="winner-name"></div>
+                    <div id="winnerDetails" class="winner-details">
+                        <span id="winnerMode"></span> / <span id="winnerArrivalOrder"></span> / <span id="winnerArrivalTime"></span>
+                    </div>
+                    <button id="replayButton" class="action-button replay-button">REPLAY</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="countdown-overlay" class="fullscreen-overlay hidden"><span id="countdown-text">3</span></div>
+        <div id="error-overlay" class="error-toast hidden"></div>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
